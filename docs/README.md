@@ -161,14 +161,22 @@ Se especifica la configuración del container que contendrá esa imagen de myjen
 
 5. Se ejecutan en este orden los siguientes comandos:
     1. terraform init
+    ![comando terraform init](image-1.png)
     2. terraform validate
     3. terraform plan
+    ![comando terraform plan 1.0](image-2.png)
+    ![comando terraform plan 2.0](image-3.png)
     4. terraform apply
+    ![comando terraform apply](image-4.png)
 Una vez ejecutados se habrá completado la ejecución de los contenedores. Se podrán visualizar desde Docker Desktop.
-
+![Container para Jenkins 1.0](image-5.png)
+![Container para Jenkins 2.0](image-6.png)
 6. Se accede a la navegación web y se escribe en el buscador localhost:8080 para acceder a la aplicación de jenkins.
-
+![Jenkins 1.0](image-7.png)
+![Página Jenkins](image-8.png)
 7. Se selecciona "Nueva Tarea" --> "Pipeline" --> "Pipeline Script from SCM" (en el apartado de Definition) --> SCM (git). En la sección de "Repository URL" copiar la URL del GitHub forkeado (con el correspondiente archivo Jenkinsfile). Luego en Branch Specifier escribir la rama de main y clickear en Guardar.
-
+![Imagen de configuración de la prueba en Jenkins](image-9.png)
 8. Por último, se pulsa en Construir ahora para ejecutar los la aplicación Python y se visualizan las etapas que se han completado con éxito y sus resultados.
 
+![Primera imagen Jenkins](image-10.png)
+![Segunda imagen Jenkins](image-11.png)
