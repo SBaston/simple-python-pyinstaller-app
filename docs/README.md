@@ -159,4 +159,16 @@ Se especifica la configuración del container que contendrá esa imagen de myjen
 - En el apartado de networks_advanced se asigna esa red a través de la cual se comunicarán los containers previamente declarada.
 - En el apartado de volumes se asigna la ruta en la que se almacenarán los datos y el nombre del mismo previamente definido.
 
+5. Se ejecutan en este orden los siguientes comandos:
+    1. terraform init
+    2. terraform validate
+    3. terraform plan
+    4. terraform apply
+Una vez ejecutados se habrá completado la ejecución de los contenedores. Se podrán visualizar desde Docker Desktop.
+
+6. Se accede a la navegación web y se escribe en el buscador localhost:8080 para acceder a la aplicación de jenkins.
+
+7. Se selecciona "Nueva Tarea" --> "Pipeline" --> "Pipeline Script from SCM" (en el apartado de Definition) --> SCM (git). En la sección de "Repository URL" copiar la URL del GitHub forkeado (con el correspondiente archivo Jenkinsfile). Luego en Branch Specifier escribir la rama de main y clickear en Guardar.
+
+8. Por último, se pulsa en Construir ahora para ejecutar los la aplicación Python y se visualizan las etapas que se han completado con éxito y sus resultados.
 
