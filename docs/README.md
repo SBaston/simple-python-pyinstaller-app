@@ -63,9 +63,17 @@ terraform {
     }
   }
 }
+```
+Se define la configuración de Terraform especificando el proveedor de Docker que se utilizará. En este caso las versiones que sean 3.0.1 o superiores.
 
-provider "docker" {}
+```
+provider "docker" {
+    host = "npipe:////.//pipe//docker_engine"
+}
+```
+Se especifica la configuración del proveedor Docker. Si se hace en Windows añadir la línea --> host = "npipe:////.//pipe//docker_engine"
 
+```
 resource "docker_image" "docker_dind" {
   name         = "docker:dind"
   keep_locally = false
@@ -76,14 +84,24 @@ resource "docker_image" "myjenkins-blueocean" {
   keep_locally = false
 }
 
+```
+Se configuran las imágenes de docker:dind (la más reciente)y myjenkins-blueocean (previamente creada en el Dockerfile). Se especifica que no se guarde localmente en nuestra máquina después de su uso.
+
+```
 resource "docker_volume" "my_volume" {
   name = "my_volume"
 }
+```
+Se define el volumen que se utiliza la persistencia de la información
 
+```
 resource "docker_network" "jenkins" {
   name = "jenkins"
 }
+```
+Se define la red a través de la cual se comunicarán los contenedores de jenkins-docker y jenkins-blueocean.
 
+```
 resource "docker_container" "docker_dind" {
   image      = docker_image.docker_dind.image_id
   name       = "jenkins-docker"
@@ -101,6 +119,16 @@ resource "docker_container" "docker_dind" {
   }
 }
 
+```
+Se especifica la configuración del container que contendrá esa imagen de docker_dind.
+- image = docker_image.docker_dind.image_id --> utiliza la imagen de docker_dind declarada en docker_image antes.
+- name  = "jenkins-docker" --> Nombre del contenedor
+- privileged = true --> Permite que el contenedor tenga mayor acceso a los dispositivos del sistema
+- En el apartado de ports se mapea el puerto 2376 del container con el puerto 2376 de nuestra máquina (localhost).
+- En el apartado de networks_advanced se asigna esa red a través de la cual se comunicarán los containers previamente declarada
+- En el apartado de volumes se asigna la ruta en la que se almacenarán esos datos y el nombre del mismo previamente definido
+
+```
 resource "docker_container" "myjenkins-blueocean" {
   image      = "myjenkins-blueocean"
   name       = "jenkins-blueocean"
@@ -122,3 +150,13 @@ resource "docker_container" "myjenkins-blueocean" {
   }
 }
 ```
+```
+Se especifica la configuración del container que contendrá esa imagen de myjenkins-blueocean.
+- image = "myjenkins-blueocean" --> utiliza la imagen de myjenkins-blueocean construida antes (fuera de Terraform a través del  Dockerfile).
+- name  = "jenkins-blueocean" --> Nombre del contenedor
+- privileged = true --> Permite que el contenedor tenga mayor acceso a los dispositivos del sistema
+- En el apartado de ports se mapea el puerto 8080 del container con el puerto 8080 de nuestra máquina (localhost) para poder visualizar Jenkins además del puerto 50000 con el puerto 50000 de nuestra máquina para ver información más específica.
+- En el apartado de networks_advanced se asigna esa red a través de la cual se comunicarán los containers previamente declarada.
+- En el apartado de volumes se asigna la ruta en la que se almacenarán los datos y el nombre del mismo previamente definido.
+
+
