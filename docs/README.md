@@ -150,7 +150,7 @@ resource "docker_container" "myjenkins-blueocean" {
   }
 }
 ```
-```
+
 Se especifica la configuración del container que contendrá esa imagen de myjenkins-blueocean.
 - image = "myjenkins-blueocean" --> utiliza la imagen de myjenkins-blueocean construida antes (fuera de Terraform a través del  Dockerfile).
 - name  = "jenkins-blueocean" --> Nombre del contenedor
